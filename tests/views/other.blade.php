@@ -1,5 +1,5 @@
 {{-- you must get 'Default' --}}
-{{ $undefined ?? 'Default' }}<br>
+<!DOCTYPE html>{{ $undefined ?? 'Default' }}<br>
 
 {{-- it must strip out this XSS sample --}}
 {{ '<script type="text/javascript">alert("Hacked!");</script>' }}<br>
