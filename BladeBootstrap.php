@@ -13,6 +13,17 @@ use BuglerV\Blade\BladeFakeApplication;
 
 class BladeBootstrap
 {
+	protected static $defaultConfig = [
+		'view.paths' => ['Views'],
+		'view.compiled' => 'cache',
+		'view.app' => 'App\\',
+	];
+
+	/**
+	 * Инициализация Blade.
+	 *
+	 * @return void
+	 */
 	public static function boot()
 	{
 		$container = self::setupContainer();
@@ -20,6 +31,20 @@ class BladeBootstrap
 		self::setupConfig($container);
 		self::setupDependencies($container);
 		self::setupBlade($container);
+	}
+
+	/**
+	 * Инициализация Blade для тестирования.
+	 *
+	 * @return void
+	 */
+	public static function test()
+	{
+		self::$defaultConfig = [
+			'view.paths' => ['tests/views'],
+			'view.compiled' => 'tests/cache',
+			'view.app' => 'tests\\',
+		];
 	}
 
 	/**
@@ -70,11 +95,7 @@ class BladeBootstrap
 		}
 
         $container->bindIf('config', function () {
-            return new \Illuminate\Config\Repository([
-				'view.paths' => ['Views'],
-				'view.compiled' => 'cache',
-				'view.app' => 'App\\',
-			]);
+            return new \Illuminate\Config\Repository(self::$defaultConfig);
         }, true);
 	}
 
