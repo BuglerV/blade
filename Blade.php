@@ -1,18 +1,14 @@
 <?php
 
-namespace Jenssegers\Blade;
+namespace BuglerV\Blade;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\Container as ContainerInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory as FactoryContract;
 use Illuminate\Contracts\View\View;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Facade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Factory;
-use Illuminate\View\ViewServiceProvider;
 
 class Blade implements FactoryContract
 {
@@ -31,12 +27,9 @@ class Blade implements FactoryContract
      */
     private $compiler;
 
-    public function __construct($viewPaths, string $cachePath, ContainerInterface $container = null)
+    public function __construct(ContainerInterface $container = null)
     {
-        $this->container = $container ?: new Container;
-
-        $this->setupContainer((array) $viewPaths, $cachePath);
-        (new ViewServiceProvider($this->container))->register();
+        $this->container = $container ?: Container::getInstance();
 
         $this->factory = $this->container->get('view');
         $this->compiler = $this->container->get('blade.compiler');
@@ -111,23 +104,4 @@ class Blade implements FactoryContract
         return call_user_func_array([$this->factory, $method], $params);
     }
 
-    protected function setupContainer(array $viewPaths, string $cachePath)
-    {
-        $this->container->bindIf('files', function () {
-            return new Filesystem;
-        }, true);
-
-        $this->container->bindIf('events', function () {
-            return new Dispatcher;
-        }, true);
-
-        $this->container->bindIf('config', function () use ($viewPaths, $cachePath) {
-            return [
-                'view.paths' => $viewPaths,
-                'view.compiled' => $cachePath,
-            ];
-        }, true);
-        
-        Facade::setFacadeApplication($this->container);
-    }
 }

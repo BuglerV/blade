@@ -1,5 +1,5 @@
 {
-    "name": "jenssegers/blade",
+    "name": "buglerv/blade",
     "description": "The standalone version of Laravel's Blade templating engine for use outside of Laravel.",
     "keywords": ["laravel", "blade", "template", "view", "render"],
     "license" : "MIT",
@@ -10,17 +10,17 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "illuminate/view": "^5.5|^6.0|^7.0|^8.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^6.0|^7.0",
-        "satooshi/php-coveralls": "^1.0"
+        "php": "^7.0|^8.0",
+        "illuminate/view": "^5.5|^6.0|^7.0|^8.0",
+        "illuminate/config": "^8.0"
     },
     "autoload": {
         "psr-4": {
-            "Jenssegers\\Blade\\": "src/"
-        }
+            "BuglerV\\Blade\\": ""
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
